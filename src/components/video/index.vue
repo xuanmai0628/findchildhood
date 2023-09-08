@@ -21,6 +21,7 @@ export default {
     commonHub.on('pageChange', (pageName) => {
       console.log(pageName)
       if (pageName === 'video') {
+        console.log('跳转接收 开始播放');
         data.videoPlayer.play()
         videoDom.value.play()
         console.log(data.videoPlayer)

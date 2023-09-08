@@ -41,7 +41,7 @@ export default {
     loading()
     // 进入video
     const toVideo = () => {
-      commonHub.commit('pageChange', 'scene')
+      commonHub.commit('pageChange', 'video')
     }
 
     return {
