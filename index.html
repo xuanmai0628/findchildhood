@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- <link rel="icon" href="/favicon.ico" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="Keywords" content="王者荣耀">
+    <meta name="Description" content="王者荣耀哈6年度赏">
+    <meta id="share-description" itemprop="description" name="Description" content="">
+    <title>王者荣耀哈6年度赏</title>
+    <script type="module" src="/src/utils/rem.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+     <!-- <script src="/src/lib/vconsole.min.js"></script>
+    <script>
+        var vc = new VConsole();
+    </script> -->
+    <!-- <script src="//ossweb-img.qq.com/images/js/PTT/ping_tcss_tgideas_https_min.js" charset="UTF-8"></script> -->
+    <!-- <script src="https://ossweb-img.qq.com/images/js/TGMobileShare/TGMobileShare.min.js"></script> -->
+    <script>
+        //分享参数设置
+        var shareParam = {
+          shareTitle: '王者荣耀“哈6”年度赏',
+          shareDesc: '恭喜你超过99.9%的人拿下去年王者峡谷名场面评审资格！去年最下饭&最秀名场面获奖名单由你评定，还有评委奖励拿，快来评选吧！',
+          shareImgUrl: 'https://game.gtimg.cn/images/dnf/cp/a20221101carnival/share.jpg', //分享icon
+          shareLink: '',
+          actName: 'a20221226wzmcm'
+        };
+        //web端分享
+        //   TGMobileShare({
+        //     shareTitle: shareParam.shareTitle, //不设置或设置为空时，页面有title，则调取title
+        //     shareDesc: shareParam.shareDesc, //不设置或设置为空时，页面有Description，则调取Description
+        //     shareImgUrl: shareParam.shareImgUrl, //分享图片尺寸200*200，且填写绝对路径
+        //     shareLink: shareParam.shareLink, //分享链接要跟当前页面同域名(手Q分享有这个要求) ,不设置或设置为空时，默认调取当前URL
+        //     actName: shareParam.actName //点击流命名，用于统计分享量，专题一般采用目录名称如a20151029demo
+        //   });
+        // var setSite = { //设置网站属性
+        //     siteType: "a20221226wzmcm", //必填项:"os"代表是官网，如果不是，则填写actName例如a20160701xxx
+        //     pageType: "index", //必填项:本页面的定位；按照页面含义填写例如main||list||detail||download||share||page1||pageN
+        //     pageName: "主页", //必填项:页面中文名
+        //     project: "other", //选填项:如果是官网模块则是必填;按照模块内容，填写固定的对应值;原生官网base;微社区ingame;同人站doujin;赛事match;故事站story;文化站history;粉丝站fans;爆料站coming;论坛bbs;默认other;
+        // };
+  
+        if (typeof (pgvMain) == 'function') pgvMain();
+      </script>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

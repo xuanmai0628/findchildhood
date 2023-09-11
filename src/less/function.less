@@ -1,0 +1,23 @@
+.setSize(@w, @h) {
+    width: replace(~'@{w}', 'px', 'rpx');
+    height: replace(~'@{h}', 'px', 'rpx');
+}
+.sizeimg(@img) {
+    .setSize(image-width(@img), image-height(@img));
+}
+.setImg(@img) {
+    .setSize(image-width(@img), image-height(@img));
+	background: url('@{img}') center / contain no-repeat;
+}
+.imgdata(@img) {
+    .setSize(image-width(@img), image-height(@img));
+    background: data-uri('@{img}') center / contain no-repeat;
+}
+.setPos(@x, @y) {
+    left: @x;
+    top: @y;
+}
+.setMargin(@left, @top) {
+    margin-left: @left;
+    margin-top: @top;
+}
