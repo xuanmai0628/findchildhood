@@ -1,0 +1,20 @@
+.m-scene {
+  position: absolute;
+  width: 7.5rem;
+  height: 16.24rem;
+  color: white;
+  background-position: center center;
+  overflow: hidden;
+}
+.m-scene canvas {
+  width: 7.5rem;
+  height: 16.24rem;
+}
+@keyframes openAni {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(0, -90rem, 0);
+  }
+}
