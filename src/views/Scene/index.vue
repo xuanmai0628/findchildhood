@@ -15,6 +15,7 @@ import * as PIXI from 'pixi.js'
 import { onMounted, ref } from 'vue'
 // import AlloyTouch  from 'alloytouch'
 import AlloyTouch from 'alloytouch'
+import { JSONStringify } from 'lib/tool'
 
 const app = ref()
 const textureList = PIXI.utils.TextureCache;
@@ -48,8 +49,8 @@ onMounted(() => {
 })
 
 const initCanvas = () => {
-    // let sprite = new PIXI.Sprite(textureList['1.jpg']);
-    // app.value.stage.addChild(sprite)
+    let sprite = new PIXI.Sprite(textureList['1.jpg']);
+    app.value.stage.addChild(sprite)
     const text: any = new PIXI.Text("向上滑动，找回童年", {
         fontFamily: "Arial",
         fontSize: 36,
@@ -66,27 +67,27 @@ const initCanvas = () => {
     // text.bezierCurveTo(app.value.screen.width / 2, 500, app.value.screen.width / 2),
     app.value.stage.addChild(text);
 
-
-
-    // 
-    for (let i = 0; i < 50; i++) {
-        console.log(i + 1);
-        console.log(bgAniTextures.value);
+    for (let i = 1; i <= 50; i++) {
         // let img:any = ;
+        let n = i < 10 ? '0' + i : i;
+        const baseBg = PIXI.BaseTexture.from(new URL(`../../assets/autoLoad/7${n}.png`, import.meta.url).href);
+        // console.log(baseBg, 'baseBg');
         bgAniTextures.value.push(
-            PIXI.BaseTexture.from(require('../../assets/autoLoad/707.png'))
-        )
-
+            new PIXI.Texture(baseBg, new PIXI.Rectangle(0, 0, 750, 1376))
+        );
     }
 
 
-
-
-
-
-
-
     //动画
+    const aniBg = new PIXI.AnimatedSprite(bgAniTextures.value);
+    aniBg.animationSpeed = 0.1;
+    aniBg.x = app.value.screen.width / 2;
+    aniBg.y = app.value.screen.height / 2;
+    aniBg.anchor.set(0.5);
+    //先隐藏
+    aniBg.visible = false
+    app.value.stage.addChild(aniBg);
+
     app.value.ticker.add((delta) => {
         let textY = Math.round(text.y);
         // console.log('帧数', textY);
@@ -107,50 +108,57 @@ const initCanvas = () => {
 
     })
     //Touch控制 文字显示隐藏
-    var target: any = document.querySelector(".scene-canvas");
-    let num: any = ref(90)
+    var canvasDom: any = document.querySelector(".scene-canvas");
+    let num: any = ref(90);
+
     var alloyTouch = new AlloyTouch({
         touch: ".m-scene",//反馈触摸的dom
-        vertical: true,//不必需，默认是true代表监听竖直方向touch
-        target: { y: 0 }, //运动的对象
+        target: canvasDom, //运动的对象
         property: "y",  //被运动的属性
-        // min: 100, //不必需,运动属性的最小值
-        // max: 2000, //不必需,滚动属性的最大值
+        min: -6000, //不必需,运动属性的最小值
+        max: 0, //不必需,滚动属性的最大值
         sensitivity: 1,//不必需,触摸区域的灵敏度，默认值为1，可以为负数
         factor: 10,//不必需,表示触摸位移运动位移与被运动属性映射关系，默认值是1
         moveFactor: 1,//不必需,表示touchmove位移与被运动属性映射关系，默认值是1
         step: 45,//用于校正到step的整数倍
         bindSelf: false,
-        maxSpeed: 2, //不必需，触摸反馈的最大速度限制 
+        maxSpeed: 1, //不必需，触摸反馈的最大速度限制 
         value: 0,
-        change: function (value: any) {
-            // target.style.transform = "translate(0," + value + "px)"
-            // target.style.webkitTransform = "translate(0," + value + "px)"
+        change: function (value) {
+            //总长度 跟图片对应好 
+            //通过value值 每次变化的value值相对于总长度的百分之几 
+            //来判断进度 需要出现对应的帧 
+
+            //value 值
+            console.log(value);
+            
         },
         touchStart: function (evt, value) {
-            console.log('start', evt.touches[0].clientY);
+            // console.log('start', evt.touches[0].clientY);
             touchStart.value = evt.touches[0].clientY;
         },
         touchMove: function (evt, value) {
             // console.log('touchMove', evt);
-            console.log(evt.touches[0].clientY);
+            // console.log(evt.touches[0].clientY);
             touchY.value = evt.touches[0].clientY;
 
             if (touchY.value > touchStart.value) {
-                console.log('向下滑');
+                // console.log('向下滑');
                 if (num.value <= 90) {
                     num.value += 2;
                     text.style.fill = `0xff8e00${num.value < 10 ? '0' + num.value : num.value}`;
                     app.value.stage.addChild(text);
                 }
             } else {
-                console.log('向上滑');
+                // console.log('向上滑');
                 if (num.value > 0) {
                     num.value -= 2;
                     text.style.fill = `0xff8e00${num.value < 10 ? '0' + num.value : num.value}`;
                     app.value.stage.addChild(text);
                 } else {
-                    console.log('透明度没有了可以显示人物了');
+                    // console.log('透明度没有了可以显示人物了');
+                    // console.log(aniBg, '看看看');
+
                 }
             }
         },
@@ -159,7 +167,7 @@ const initCanvas = () => {
 
         },
         tap: function (evt, value) {
-            // console.log('tap',evt,'tap',value);
+            console.log('tap', evt, 'tap', value);
 
         },
         pressMove: function (evt, value) {
@@ -170,11 +178,11 @@ const initCanvas = () => {
             // console.log('运动结束', value);
         } //运动结束
     })
-    alloyTouch.to(target);
-
-
-
+    // alloyTouch.to(canvasDom);
 }
+
+
+
 
 const toShare = () => {
     commonHub.commit('pageChange', 'share')
