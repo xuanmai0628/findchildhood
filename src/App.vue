@@ -76,6 +76,9 @@ if (getQuery('vconsole')) {
 @import './less/imgs.less'; // node生成的背景图片样式
 @import './less/baseImgs.less'; // 固定为base64的图片
 
+// 新增
+@import './less/index.less';
+
 html {
     font-size: 16px;
     width: 100%;

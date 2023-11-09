@@ -31,12 +31,11 @@ const loading = async() => {
     await pixiLoading(formatImgList(), (progress) => {
         // console.log('加载进度',progress);
         counter.value = parseInt(progress);
-        if (counter.value >= 100) {
+        if (counter.value >= 99) {
             commonHub.commit('pageChange', 'scene')
         }
     }).then((resource) => {
         store.setImgsBuffer(resource);
-        // console.log( '哈哈哈哈',resource);
         counter.value = 100;
     })
 

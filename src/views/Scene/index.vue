@@ -4,8 +4,30 @@
 </style>
 
 <template>
-    <div class="m-scene abcter">
-        <canvas class="abcter scene-canvas" id="canvas"></canvas>
+    <div class="m-scene">
+        <canvas class="lcter scene-canvas" id="canvas"></canvas>
+        <div class="scene-confirm tcter"></div>
+        <div class="scene-side lcter">
+            <div class="scene-item-active" :style="{ left: itemActiPosi + 'rem' }" v-show="listShow" alt=""></div>
+            <div class="scene-item" v-for="item in itemArr" :key="item.id" @click="onItem(item)">
+                <img class="item-img" :src="item.img" alt="">
+            </div>
+            <div class="scene-list scene-list-1" v-show="listShow == 1">
+                <div class="scene-content" v-for="(item, index) in contentArr[0]" @click="onFigure(item)">
+                    <div :class="`item-img item-img-${index}`"></div>
+                </div>
+            </div>
+            <div class="scene-list scene-list-2" v-show="listShow == 2">
+                <div class="scene-content" v-for="(item, index) in contentArr[1]" @click="onBgContent(item)">
+                    <div :class="`item-img item-img-${index}`"></div>
+                </div>
+            </div>
+            <div class="scene-list scene-list-3" v-show="listShow == 3">
+                <div class="scene-content" v-for="(item, index) in contentArr[2]" @click="onSticker(item)">
+                    <div :class="`item-img item-img-${index}`"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -20,169 +42,432 @@ import { JSONStringify } from 'lib/tool'
 const app = ref()
 const textureList = PIXI.utils.TextureCache;
 
-//定义是否向上还是向下
-let isTextMove = ref(true)
-
-//定义变量存按下位置和移动位置 来判断是上滑还是下滑
-let touchStart = ref();
-let touchY = ref();
-
-// 动画数组
-let bgAniTextures = ref([]);
-
 commonHub.on('pageChange', (pageName) => {
     if (pageName === 'scene') {
         initCanvas()
     }
 })
+let itemActiPosi = ref(1.2);
+const itemArr = [
+    {
+        id: 1,
+        name: "摆个动作",
+        img: new URL("../../assets/autoLoad/btn_action.png", import.meta.url).href,
+        activePosition: 1.2,
+    },
+    {
+        id: 2,
+        name: "选择场景",
+        img: new URL("../../assets/autoLoad/btn_scene.png", import.meta.url).href,
+        activePosition: 3.9,
+    },
+    {
+        id: 3,
+        name: "贴吉祥话",
+        img: new URL("../../assets/autoLoad/btn_element.png", import.meta.url).href,
+        activePosition: 6.6,
+    }
+];
+let listShow = ref(1)
+const contentArr = ref([
+    [
+        {
+            id: 1,
+            name: '动作1',
+            img: new URL("../../assets/autoLoad/action_1.png", import.meta.url).href,
+            textureName: "action_spr1.png",
+            x: 174,
+            y: 116
+        },
+        {
+            id: 2,
+            name: '动作2',
+            img: new URL("../../assets/autoLoad/action_2.png", import.meta.url).href,
+            textureName: "action_spr2.png",
+            x: 304,
+            y: 0,
+        },
+        {
+            id: 3,
+            name: '动作3',
+            img: new URL("../../assets/autoLoad/action_3.png", import.meta.url).href,
+            textureName: "action_spr3.png",
+            x: 280,
+            y: 6,
+        },
+        {
+            id: 4,
+            name: '动作4',
+            img: new URL("../../assets/autoLoad/action_4.png", import.meta.url).href,
+            textureName: "action_spr4.png",
+            x: 180,
+            y: 50,
+        },
+        {
+            id: 5,
+            name: '动作5',
+            img: new URL("../../assets/autoLoad/action_5.png", import.meta.url).href,
+            textureName: "action_spr5.png",
+            x: 68,
+            y: 70,
+        },
+    ], [
+        {
+            id: 1,
+            name: '场景1',
+            img: new URL("../../assets/autoLoad/scene_1.png", import.meta.url).href,
+            textureName: "scene_spr1.jpg",
+        },
+        {
+            id: 2,
+            name: '场景2',
+            img: new URL("../../assets/autoLoad/scene_2.png", import.meta.url).href,
+            textureName: 'scene_spr2.jpg',
+        },
+        {
+            id: 3,
+            name: '场景3',
+            img: new URL("../../assets/autoLoad/scene_3.png", import.meta.url).href,
+            textureName: 'scene_spr3.jpg',
+        },
+
+    ], [
+        {
+            id: 1,
+            name: '吉祥话1',
+            img: new URL("../../assets/autoLoad/element_1.png", import.meta.url).href,
+            textureName: "element_spr1.png",
+            x: 290,
+            y: 96
+        },
+        {
+            id: 2,
+            name: '吉祥话2',
+            img: new URL("../../assets/autoLoad/element_2.png", import.meta.url).href,
+            textureName: "element_spr2.png",
+            x: 292,
+            y: 122
+        },
+        {
+            id: 3,
+            name: '吉祥话3',
+            img: new URL("../../assets/autoLoad/element_3.png", import.meta.url).href,
+            textureName: "element_spr3.png",
+            x: 304,
+            y: 92
+        },
+        {
+            id: 4,
+            name: '吉祥话4',
+            img: new URL("../../assets/autoLoad/element_4.png", import.meta.url).href,
+            textureName: "element_spr4.png",
+            x: 256,
+            y: 92
+        },
+        {
+            id: 5,
+            name: '吉祥话5',
+            img: new URL("../../assets/autoLoad/element_5.png", import.meta.url).href,
+            textureName: "element_spr5.png",
+            x: 30,
+            y: 460
+        },
+        {
+            id: 6,
+            name: '吉祥话6',
+            img: new URL("../../assets/autoLoad/element_6.png", import.meta.url).href,
+            textureName: "element_spr6.png",
+            x: 30,
+            y: 440
+        },
+        {
+            id: 7,
+            name: '吉祥话7',
+            img: new URL("../../assets/autoLoad/element_7.png", import.meta.url).href,
+            textureName: "element_spr7.png",
+            x: 30,
+            y: 460
+        },
+    ]
+]);
 
 onMounted(() => {
     app.value = new PIXI.Application({
         view: document.querySelector('.scene-canvas'),
-        width: 750,
-        height: 1624,
-        backgroundColor: 0xffe0ac,
+        width: 1624,
+        height: 750,
+        backgroundColor: 0xffffff,
         resolution: window.devicePixelRatio || 1,
         antialias: true, //抗锯齿
     })
-
 })
+// app容器
+let content = null;
+
+// 三种类型的精灵
+let figureSprite = null;
+let bgSprite = null;
+
+let coupletSprite = null;
+let stickerSprite = null;
+
+// 矩形
+let graphics = null;
+let closeIcon = null;
+
+// 为最后三个贴纸创建一个容器
+const stickerContainer = new PIXI.Container();
 
 const initCanvas = () => {
-    let sprite = new PIXI.Sprite(textureList['1.jpg']);
-    app.value.stage.addChild(sprite)
-    const text: any = new PIXI.Text("向上滑动，找回童年", {
-        fontFamily: "Arial",
-        fontSize: 36,
-        fill: 0xff8e0090,
-        align: "center",
-        fontWeight: "bold",
-
-    });
-    // 设置文字位置
-    text.x = app.value.screen.width / 2;
-    text.y = 500;
-    text.anchor.set(0.5);
-    // text.moveTo(app.value.screen.width / 2, 500);
-    // text.bezierCurveTo(app.value.screen.width / 2, 500, app.value.screen.width / 2),
-    app.value.stage.addChild(text);
-
-    for (let i = 1; i <= 50; i++) {
-        // let img:any = ;
-        let n = i < 10 ? '0' + i : i;
-        const baseBg = PIXI.BaseTexture.from(new URL(`../../assets/autoLoad/7${n}.png`, import.meta.url).href);
-        // console.log(baseBg, 'baseBg');
-        bgAniTextures.value.push(
-            new PIXI.Texture(baseBg, new PIXI.Rectangle(0, 0, 750, 1376))
-        );
-    }
-
-
-    //动画
-    const aniBg = new PIXI.AnimatedSprite(bgAniTextures.value);
-    aniBg.animationSpeed = 0.1;
-    aniBg.x = app.value.screen.width / 2;
-    aniBg.y = app.value.screen.height / 2;
-    aniBg.anchor.set(0.5);
-    //先隐藏
-    aniBg.visible = false
-    app.value.stage.addChild(aniBg);
-
-    app.value.ticker.add((delta) => {
-        let textY = Math.round(text.y);
-        // console.log('帧数', textY);
-        //文字上下运动 想用贝塞尔曲线 
-        if (isTextMove.value) {
-            if (textY >= 600) isTextMove.value = false;
-            if (textY <= 600 && textY >= 530) text.y += 0.8 * delta;
-            text.y += 1 * delta
-        }
-
-        if (!isTextMove.value) {
-            if (textY <= 500) {
-                isTextMove.value = true;
-            }
-            if (textY <= 600 && textY >= 530) text.y -= 0.8 * delta;
-            text.y -= 1 * delta
-        }
+    content = app.value.stage;
+    content.interactive = true;
+    content.eventMode = 'static';
+    content.hitArea = app.value.screen;
+    content.on("pointerdown", function (e) {
+        e.stopPropagation();
+        closeIcon.off("pointermove")
+        content.off("pointermove")
+        console.log('主要容器');
+        // 隐藏线条和图标
+        graphics.clear()
+        closeIcon.visible = false;
 
     })
-    //Touch控制 文字显示隐藏
-    var canvasDom: any = document.querySelector(".scene-canvas");
-    let num: any = ref(90);
 
-    var alloyTouch = new AlloyTouch({
-        touch: ".m-scene",//反馈触摸的dom
-        target: canvasDom, //运动的对象
-        property: "y",  //被运动的属性
-        min: -6000, //不必需,运动属性的最小值
-        max: 0, //不必需,滚动属性的最大值
-        sensitivity: 1,//不必需,触摸区域的灵敏度，默认值为1，可以为负数
-        factor: 10,//不必需,表示触摸位移运动位移与被运动属性映射关系，默认值是1
-        moveFactor: 1,//不必需,表示touchmove位移与被运动属性映射关系，默认值是1
-        step: 45,//用于校正到step的整数倍
-        bindSelf: false,
-        maxSpeed: 1, //不必需，触摸反馈的最大速度限制 
-        value: 0,
-        change: function (value) {
-            //总长度 跟图片对应好 
-            //通过value值 每次变化的value值相对于总长度的百分之几 
-            //来判断进度 需要出现对应的帧 
+    // console.log(content);
+    // 背景
+    bgSprite = new PIXI.Sprite(textureList['scene_spr1.jpg']);
+    // sprite.scale.set(0.5);
+    bgSprite.width = app.value.screen.width;
+    bgSprite.height = app.value.screen.height;
+    content.addChild(bgSprite)
+    // 人物
+    figureSprite = new PIXI.Sprite(textureList["action_spr1.png"]);
+    figureSprite.position.set(174, 116)
+    content.addChild(figureSprite)
 
-            //value 值
-            console.log(value);
-            
-        },
-        touchStart: function (evt, value) {
-            // console.log('start', evt.touches[0].clientY);
-            touchStart.value = evt.touches[0].clientY;
-        },
-        touchMove: function (evt, value) {
-            // console.log('touchMove', evt);
-            // console.log(evt.touches[0].clientY);
-            touchY.value = evt.touches[0].clientY;
+    // 吉祥话
+    coupletSprite = new PIXI.Sprite(textureList["element_spr1.png"]);
+    coupletSprite.position.set(290, 96)
+    content.addChild(coupletSprite)
 
-            if (touchY.value > touchStart.value) {
-                // console.log('向下滑');
-                if (num.value <= 90) {
-                    num.value += 2;
-                    text.style.fill = `0xff8e00${num.value < 10 ? '0' + num.value : num.value}`;
-                    app.value.stage.addChild(text);
-                }
-            } else {
-                // console.log('向上滑');
-                if (num.value > 0) {
-                    num.value -= 2;
-                    text.style.fill = `0xff8e00${num.value < 10 ? '0' + num.value : num.value}`;
-                    app.value.stage.addChild(text);
-                } else {
-                    // console.log('透明度没有了可以显示人物了');
-                    // console.log(aniBg, '看看看');
 
-                }
-            }
-        },
-        touchEnd: function (evt, value) {
-            // console.log('touchEnd',evt,'touchEnd',value);
 
-        },
-        tap: function (evt, value) {
-            console.log('tap', evt, 'tap', value);
+    // 容器
+    stickerContainer.interactive = true;
+    stickerContainer.visible  = false;
+    content.addChild(stickerContainer)
 
-        },
-        pressMove: function (evt, value) {
-            // console.log('pressMove', evt, 'pressMove', value);
+    stickerSprite = new PIXI.Sprite(textureList["element_spr5.png"]);
+    // stickerSprite.anchor.set(0.5);
+    stickerContainer.addChild(stickerSprite)
+    console.log('加载纹理', textureList);
 
-        },
-        animationEnd: function (value) {
-            // console.log('运动结束', value);
-        } //运动结束
-    })
-    // alloyTouch.to(canvasDom);
+
+    // 画矩形
+    graphics = new PIXI.Graphics();
+    stickerContainer.addChild(graphics)
+
+    //放大缩小图标
+    closeIcon = new PIXI.Sprite(textureList["btn_scale.png"]);
+    closeIcon.zIndex = 99;
+    closeIcon.anchor.set(0.5);
+    closeIcon.rotation = Math.PI / 2;
+    closeIcon.eventMode = "static";
+    closeIcon.interactive = true;
+    // closeIcon.buttonMode = true;
+    stickerContainer.addChild(closeIcon)
+}
+// 分类事件
+const onItem = (item) => {
+    itemActiPosi.value = item.activePosition
+    listShow.value = item.id
 }
 
+// 每一个栏目的事件
+const onFigure = (item) => {
+    listShow.value = 0;
+    let { textureName, x, y } = item;
+    checkoutFigure(textureName, x, y);
+}
+
+const onBgContent = (item) => {
+    listShow.value = 0;
+    console.log(item);
+    checkoutBg(item.textureName);
+}
+const onSticker = (item) => {
+    listShow.value = 0;
+    let { textureName, x, y, id } = item;
+    checkoutSricker(textureName, x, y, id);
+}
+
+// 对应的切换事件
+// 切换人物贴纸
+const checkoutFigure = (name, x, y) => {
+    figureSprite.texture = textureList[name];
+    figureSprite.position.set(x, y)
+}
+
+// 切换背景
+const checkoutBg = (name) => {
+    bgSprite.texture = textureList[name];
+}
+
+// 为什么要定义这两个变量 可能是因为作用域问题吧 
+// 封装了 checkEventListener函数 但出现首次点击后 
+// 切换别的贴纸 变量的值没有改变
+let srickerX;
+let srickerY;
+// 切换对联
+const checkoutSricker = function (name, x1, y1, id) {
+    srickerX = x1;
+    srickerY = y1;
+    if (id < 5) {
+        graphics.clear()
+        // 两个精灵之间的显示隐藏
+        coupletSprite.visible = true;
+        stickerContainer.visible = false
+
+        coupletSprite.texture = textureList[name];
+        coupletSprite.position.set(x1, y1)
+    } else {
+        console.log('贴纸');
+
+        stickerContainer.position.set(10, 240);
+        // 两个精灵之间的显示隐藏
+        coupletSprite.visible = false;
+        stickerContainer.visible = true;
+
+        stickerSprite.texture = textureList[name];
+        stickerSprite.position.set(stickerContainer.x, stickerContainer.y)
+
+        // 容器聚集
+        // checkEventListener(stickerContainer, "pointerdown", (e) => {
+        //     e.stopPropagation();
+        //     // console.log('点击了贴纸容器', e);
+        //     // 已经画上矩形了就无需再重复执行了
+        //     if (graphics.height) return
+        //     // 矩形
+        //     graphics.clear()
+        //     graphics.lineStyle(4, 0xFFFFFF, 4);
+        //     graphics.drawRect(srickerX - 10, srickerY - 10, stickerSprite.width + 20, stickerSprite.height + 20);
+        //     graphics.endFill();
+        //     closeIcon.visible = true;
+        // });
+        stickerContainer.off("pointerdown");
+        stickerContainer.off("pointerup");
+        let dragging = false;
+        let prevX, prevY;
+        stickerContainer.on("pointerdown", (e) => {
+            e.stopPropagation();
+            closeIcon.off("pointermove")
+            // console.log('点击了贴纸容器', e);
+            // 已经画上矩形了就无需再重复执行了
+            dragging = true;
+            prevX = e.data.global.x;
+            prevY = e.data.global.y;
+            // console.log('看看首次按下存下来的数值',prevX,prevY);
+            // 矩形
+            if (graphics.height) return
+            graphics.clear()
+            graphics.lineStyle(4, 0xFFFFFF, 4);
+            graphics.drawRect(stickerSprite.x - 10, stickerSprite.y - 10, stickerSprite.width + 20, stickerSprite.height + 20);
+            graphics.endFill();
+            closeIcon.visible = true;
+        })
+        stickerContainer.on('pointerup', () => {
+            dragging = false;
+            console.log('父容器鼠标up');
+        });
+        // stickerContainer.on('pointerupoutside', () => {
+        //     dragging = false;
+        // });
+        stickerContainer.on("pointermove", function (e) {
+            if (dragging) {
+                const dx = e.data.global.x - prevX;
+                const dy = e.data.global.y - prevY;
+                // console.log('移动的pre xy',prevX,prevY);
+                // console.log('移动的xy',e.data.global.x,e.data.global.y);
+                // console.log('移动相减',dx,dy);
+                // console.log('执行一次-------------');
+                stickerContainer.x += dx;
+                stickerContainer.y += dy;
+                prevX = e.data.global.x;
+                prevY = e.data.global.y;
+            }
+        })
+
+        // 矩形
+        graphics.clear()
+        console.log(stickerContainer.x, stickerContainer.y);
+        graphics.lineStyle(4, 0xFFFFFF, 4);
+        graphics.drawRect(stickerContainer.x - 10, stickerContainer.y - 10, stickerSprite.width + 20, stickerSprite.height + 20);
+        graphics.endFill();
+        // stickerContainer.width = stickerSprite.width + 20;
+        // stickerContainer.height = stickerSprite.height + 20;
+
+        // stickerContainer.rotation = Math.PI;
+        console.log('贴纸盒子', stickerContainer);
 
 
+        // 关闭按钮
+        closeIcon.visible = true;
+        closeIcon.position.set(stickerContainer.x + stickerSprite.width + 10, stickerContainer.y - 10);
+        closeIcon.off("pointerdown")
+        closeIcon.off("pointermove")
+        closeIcon.on("pointerdown", function (e) {
+            console.log('关闭按钮', e);
+            console.log(this);
+            console.log(srickerX, srickerY);
+            console.log(stickerContainer);
+            // 阻止传播默认事件
+            e.stopPropagation();
+            content.on("pointermove", function (e) {
+                console.log('关闭按钮移动中', e.data);
+                // e.stopPropagation();
+                console.log(Math.random() * 10);
+                // stickerContainer.position.set(e.data.global.x, e.data.global.y)
+            })
+
+        })
+
+        closeIcon.on("pointerup", function () {
+            closeIcon.off("pointermove");
+            console.log("关闭图标解除鼠标移动事件");
+        })
+        // checkEventListener(closeIcon, "pointerdown", function (e) {
+        //     console.log('关闭按钮', e);
+        //     console.log(this);
+        //     console.log(srickerX, srickerY);
+        //     console.log(stickerContainer);
+        //     // 阻止传播默认事件
+        //     e.stopPropagation();
+        //     // e.stopPropagationHint = true;
+        //     checkEventListener(closeIcon, "pointermove", function (e) {
+        //         console.log('关闭按钮移动中', e);
+
+        //     })
+        // });
+
+    }
+}
+
+/** 
+ * 添加事件监听
+ * @param -对象
+ * @param -事件类型
+ * @param -执行函数
+*/
+const checkEventListener = function (object, type, callback) {
+    if (!object.listenerCount(type)) {
+        // console.log('添加事件成功');
+        object.on(type, callback);
+    } else {
+        // console.log('事件已经存在所以解绑');
+        object.off(type, callback);
+    }
+}
 
 const toShare = () => {
     commonHub.commit('pageChange', 'share')

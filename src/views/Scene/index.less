@@ -1,24 +1,170 @@
-.m-scene{
-    position: absolute;
-    width: 7.5rem;
-    height: 16.24rem;
+.m-scene {
+    width: 100%;
+    height: 100%;
     color: white;
-    background-position: center center;
-    overflow: hidden;
-    canvas{
-        width: 7.5rem;
-        height: 16.24rem;
+    font-size: 14px;
+    // background-position: center center;
+    // overflow: hidden;
+    canvas {
+        position: absolute;
+        width: 16.24rem;
+        height: 7.50rem;
     }
-    .text{
-        
+    .scene-confirm{
+        width: 3rem;
+        height: 3rem;
+        background: url("../../assets/autoLoad/complete_diy.png") 0/cover no-repeat;
+        right: 0.6rem;
     }
-}
+    //导航栏
+    .scene-side {
+        width: 10rem;
+        height: .85rem;
+        position: absolute;
+        bottom: .1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: url("../../assets/autoLoad/diy_btn_list.png") 0/cover no-repeat;
+        .scene-item-active{
+            width: 2.2rem;
+            height: .5rem;
+            position: absolute;
+            z-index: 1;
+            transition: all .5s;
+            background: url("../../assets/autoLoad/diy_btn_active.png") 0/cover no-repeat;
+        }
+        .scene-item {
+            // width: 100%;
+            margin: 0 .4rem;
+            z-index: 2;
+            .item-img {
+                width: 1.9rem;
+                height: 0.41rem;
+            }
+        }
+        .scene-list{
+            display: flex;
+            position: absolute;
+            top: -0.8rem;
+            border-radius: .2rem;
+            .scene-content{
+                width: 2rem;
+                height: .68rem;
+                // background-color: red;
+                // border: 1px solid #ff0000;
+                padding: .04rem 0;
+                box-sizing: border-box;
+            }
+        }
+        .scene-list-1{
+            width: 8.01rem;
+            height: .9rem;
+            background:url("../../assets/autoLoad/active_list_bg.png") 0/cover no-repeat;
+            .scene-content{
+                .item-img{
+                    display: inline-block;
 
-@keyframes openAni {
-    0%{
-        transform: translate3d(0, 0, 0);
+                }
+                .item-img-0{
+                    width: .75rem;
+                    height: .59rem;
+                    background: url("../../assets/autoLoad/action_1.png") 0/cover no-repeat;
+
+                }
+                .item-img-1{
+                    width: .81rem;
+                    height: .58rem;
+                    background: url("../../assets/autoLoad/action_2.png") 0/cover no-repeat;
+                }
+                .item-img-2{
+                    width: .73rem;
+                    height: .56rem;
+                    background: url("../../assets/autoLoad/action_3.png") 0/cover no-repeat;
+                }
+                .item-img-3{
+                    width: .42rem;
+                    height: .58rem;
+                    background: url("../../assets/autoLoad/action_4.png") 0/cover no-repeat;
+                }
+                .item-img-4{
+                    width: 1.13rem;
+                    height: .57rem;
+                    background: url("../../assets/autoLoad/action_5.png") 0/cover no-repeat;
+                }
+            }
+           
+        }
+        .scene-list-2{
+            width: 5.1rem;
+            height: .86rem;
+            background:url("../../assets/autoLoad/scene_list_bg.png") 0/cover no-repeat;
+            .scene-content{
+                padding: .1rem 0;
+                .item-img{
+                    display: inline-block;
+                    height: .46rem;
+                    width: .67rem;
+                }
+                .item-img-0{
+                    background: url("../../assets/autoLoad/scene_1.png") 0/cover no-repeat;
+                }
+                .item-img-1{
+                    height: .48rem;
+                    background: url("../../assets/autoLoad/scene_2.png") 0/cover no-repeat;
+                }
+                .item-img-2{
+                    background: url("../../assets/autoLoad/scene_3.png") 0/cover no-repeat;
+                }
+            }
+            
+        }
+
+        .scene-list-3{
+            width: 8.87rem;
+            height: .86rem;
+            background: url("../../assets/autoLoad/element_list_bg.png") 0/cover no-repeat;
+            .scene-content{
+                padding: .1rem 0;
+                .item-img{
+                    display: inline-block;
+                    height: .5rem;
+                }
+                .item-img-0{
+                    width: .33rem;
+                    background: url("../../assets/autoLoad/element_1.png") 0/cover no-repeat;
+                }
+                .item-img-1{
+                    width: .27rem;
+                    background: url("../../assets/autoLoad/element_2.png") 0/cover no-repeat;
+                }
+                .item-img-2{
+                    width: .38rem;
+                    background: url("../../assets/autoLoad/element_3.png") 0/cover no-repeat;
+                }
+                .item-img-3{
+                    width: .26rem;
+                    background: url("../../assets/autoLoad/element_4.png") 0/cover no-repeat;
+                }
+                .item-img-4{
+                    width: .35rem;
+                    height: .52rem;
+                    background: url("../../assets/autoLoad/element_5.png") 0/cover no-repeat;
+                }
+                .item-img-5{
+                    width: .47rem;
+                    height: .49rem;
+                    background: url("../../assets/autoLoad/element_6.png") 0/cover no-repeat;
+                }
+                .item-img-6{
+                    width: .49rem;
+                    height: .49rem;
+                    background: url("../../assets/autoLoad/element_7.png") 0/cover no-repeat;
+                }
+            }
+        }
+
+
     }
-    100%{
-        transform: translate3d(0, -90rem, 0);
-    }
+
 }

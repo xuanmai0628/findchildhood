@@ -1,20 +1,154 @@
 .m-scene {
-  position: absolute;
-  width: 7.5rem;
-  height: 16.24rem;
+  width: 100%;
+  height: 100%;
   color: white;
-  background-position: center center;
-  overflow: hidden;
+  font-size: 14px;
 }
 .m-scene canvas {
-  width: 7.5rem;
-  height: 16.24rem;
+  position: absolute;
+  width: 16.24rem;
+  height: 7.5rem;
 }
-@keyframes openAni {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(0, -90rem, 0);
-  }
+.m-scene .scene-confirm {
+  width: 3rem;
+  height: 3rem;
+  background: url("../../assets/autoLoad/complete_diy.png") 0 / cover no-repeat;
+  right: 0.6rem;
+}
+.m-scene .scene-side {
+  width: 10rem;
+  height: 0.85rem;
+  position: absolute;
+  bottom: 0.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: url("../../assets/autoLoad/diy_btn_list.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-item-active {
+  width: 2.2rem;
+  height: 0.5rem;
+  position: absolute;
+  z-index: 1;
+  transition: all 0.5s;
+  background: url("../../assets/autoLoad/diy_btn_active.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-item {
+  margin: 0 0.4rem;
+  z-index: 2;
+}
+.m-scene .scene-side .scene-item .item-img {
+  width: 1.9rem;
+  height: 0.41rem;
+}
+.m-scene .scene-side .scene-list {
+  display: flex;
+  position: absolute;
+  top: -0.8rem;
+  border-radius: 0.2rem;
+}
+.m-scene .scene-side .scene-list .scene-content {
+  width: 2rem;
+  height: 0.68rem;
+  padding: 0.04rem 0;
+  box-sizing: border-box;
+}
+.m-scene .scene-side .scene-list-1 {
+  width: 8.01rem;
+  height: 0.9rem;
+  background: url("../../assets/autoLoad/active_list_bg.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-list-1 .scene-content .item-img {
+  display: inline-block;
+}
+.m-scene .scene-side .scene-list-1 .scene-content .item-img-0 {
+  width: 0.75rem;
+  height: 0.59rem;
+  background: url("../../assets/autoLoad/action_1.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-list-1 .scene-content .item-img-1 {
+  width: 0.81rem;
+  height: 0.58rem;
+  background: url("../../assets/autoLoad/action_2.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-list-1 .scene-content .item-img-2 {
+  width: 0.73rem;
+  height: 0.56rem;
+  background: url("../../assets/autoLoad/action_3.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-list-1 .scene-content .item-img-3 {
+  width: 0.42rem;
+  height: 0.58rem;
+  background: url("../../assets/autoLoad/action_4.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-list-1 .scene-content .item-img-4 {
+  width: 1.13rem;
+  height: 0.57rem;
+  background: url("../../assets/autoLoad/action_5.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-list-2 {
+  width: 5.1rem;
+  height: 0.86rem;
+  background: url("../../assets/autoLoad/scene_list_bg.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-list-2 .scene-content {
+  padding: 0.1rem 0;
+}
+.m-scene .scene-side .scene-list-2 .scene-content .item-img {
+  display: inline-block;
+  height: 0.46rem;
+  width: 0.67rem;
+}
+.m-scene .scene-side .scene-list-2 .scene-content .item-img-0 {
+  background: url("../../assets/autoLoad/scene_1.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-list-2 .scene-content .item-img-1 {
+  height: 0.48rem;
+  background: url("../../assets/autoLoad/scene_2.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-list-2 .scene-content .item-img-2 {
+  background: url("../../assets/autoLoad/scene_3.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-list-3 {
+  width: 8.87rem;
+  height: 0.86rem;
+  background: url("../../assets/autoLoad/element_list_bg.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-list-3 .scene-content {
+  padding: 0.1rem 0;
+}
+.m-scene .scene-side .scene-list-3 .scene-content .item-img {
+  display: inline-block;
+  height: 0.5rem;
+}
+.m-scene .scene-side .scene-list-3 .scene-content .item-img-0 {
+  width: 0.33rem;
+  background: url("../../assets/autoLoad/element_1.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-list-3 .scene-content .item-img-1 {
+  width: 0.27rem;
+  background: url("../../assets/autoLoad/element_2.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-list-3 .scene-content .item-img-2 {
+  width: 0.38rem;
+  background: url("../../assets/autoLoad/element_3.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-list-3 .scene-content .item-img-3 {
+  width: 0.26rem;
+  background: url("../../assets/autoLoad/element_4.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-list-3 .scene-content .item-img-4 {
+  width: 0.35rem;
+  height: 0.52rem;
+  background: url("../../assets/autoLoad/element_5.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-list-3 .scene-content .item-img-5 {
+  width: 0.47rem;
+  height: 0.49rem;
+  background: url("../../assets/autoLoad/element_6.png") 0 / cover no-repeat;
+}
+.m-scene .scene-side .scene-list-3 .scene-content .item-img-6 {
+  width: 0.49rem;
+  height: 0.49rem;
+  background: url("../../assets/autoLoad/element_7.png") 0 / cover no-repeat;
 }
