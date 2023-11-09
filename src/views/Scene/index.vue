@@ -225,11 +225,10 @@ const initCanvas = () => {
     content.hitArea = app.value.screen;
     content.on("pointerdown", function (e) {
         e.stopPropagation();
-        closeIcon.off("pointermove")
         content.off("pointermove")
         console.log('主要容器');
         // 隐藏线条和图标
-        graphics.clear()
+        graphics.visible = false;
         closeIcon.visible = false;
 
     })
@@ -241,6 +240,7 @@ const initCanvas = () => {
     bgSprite.width = app.value.screen.width;
     bgSprite.height = app.value.screen.height;
     content.addChild(bgSprite)
+
     // 人物
     figureSprite = new PIXI.Sprite(textureList["action_spr1.png"]);
     figureSprite.position.set(174, 116)
@@ -255,7 +255,7 @@ const initCanvas = () => {
 
     // 容器
     stickerContainer.interactive = true;
-    stickerContainer.visible  = false;
+    stickerContainer.visible = false;
     content.addChild(stickerContainer)
 
     stickerSprite = new PIXI.Sprite(textureList["element_spr5.png"]);
@@ -360,20 +360,21 @@ const checkoutSricker = function (name, x1, y1, id) {
         let dragging = false;
         let prevX, prevY;
         stickerContainer.on("pointerdown", (e) => {
+            console.log('父容器按下');
             e.stopPropagation();
-            closeIcon.off("pointermove")
             // console.log('点击了贴纸容器', e);
-            // 已经画上矩形了就无需再重复执行了
             dragging = true;
             prevX = e.data.global.x;
             prevY = e.data.global.y;
             // console.log('看看首次按下存下来的数值',prevX,prevY);
             // 矩形
-            if (graphics.height) return
-            graphics.clear()
-            graphics.lineStyle(4, 0xFFFFFF, 4);
-            graphics.drawRect(stickerSprite.x - 10, stickerSprite.y - 10, stickerSprite.width + 20, stickerSprite.height + 20);
-            graphics.endFill();
+            // 已经画上矩形了就无需再重复执行了
+            // if (graphics.height) return
+            // graphics.clear()
+            // graphics.lineStyle(4, 0xFFFFFF, 4);
+            // graphics.drawRect(stickerSprite.x - 10, stickerSprite.y - 10, stickerSprite.width + 20, stickerSprite.height + 20);
+            // graphics.endFill();
+            graphics.visible = true;
             closeIcon.visible = true;
         })
         stickerContainer.on('pointerup', () => {
@@ -387,10 +388,6 @@ const checkoutSricker = function (name, x1, y1, id) {
             if (dragging) {
                 const dx = e.data.global.x - prevX;
                 const dy = e.data.global.y - prevY;
-                // console.log('移动的pre xy',prevX,prevY);
-                // console.log('移动的xy',e.data.global.x,e.data.global.y);
-                // console.log('移动相减',dx,dy);
-                // console.log('执行一次-------------');
                 stickerContainer.x += dx;
                 stickerContainer.y += dy;
                 prevX = e.data.global.x;
@@ -400,42 +397,40 @@ const checkoutSricker = function (name, x1, y1, id) {
 
         // 矩形
         graphics.clear()
-        console.log(stickerContainer.x, stickerContainer.y);
         graphics.lineStyle(4, 0xFFFFFF, 4);
         graphics.drawRect(stickerContainer.x - 10, stickerContainer.y - 10, stickerSprite.width + 20, stickerSprite.height + 20);
         graphics.endFill();
-        // stickerContainer.width = stickerSprite.width + 20;
-        // stickerContainer.height = stickerSprite.height + 20;
-
-        // stickerContainer.rotation = Math.PI;
-        console.log('贴纸盒子', stickerContainer);
-
 
         // 关闭按钮
+        let closeFlag = false;
         closeIcon.visible = true;
         closeIcon.position.set(stickerContainer.x + stickerSprite.width + 10, stickerContainer.y - 10);
         closeIcon.off("pointerdown")
         closeIcon.off("pointermove")
+        closeIcon.off("pointerup")
+        console.log('=看看框高',closeIcon.width,closeIcon.height);
         closeIcon.on("pointerdown", function (e) {
             console.log('关闭按钮', e);
             console.log(this);
-            console.log(srickerX, srickerY);
             console.log(stickerContainer);
             // 阻止传播默认事件
             e.stopPropagation();
-            content.on("pointermove", function (e) {
-                console.log('关闭按钮移动中', e.data);
-                // e.stopPropagation();
-                console.log(Math.random() * 10);
-                // stickerContainer.position.set(e.data.global.x, e.data.global.y)
-            })
-
+            closeFlag = true;
         })
-
-        closeIcon.on("pointerup", function () {
-            closeIcon.off("pointermove");
+        closeIcon.on("pointermove", function (e) {
+            if(closeFlag) return
+            console.log('关闭按钮移动中', e.data);
+            // e.stopPropagation();
+            console.log(Math.random() * 10);
+        })
+        
+        closeIcon.on("pointerup", function (e) {
+            closeFlag = false;
+            e.stopPropagation();
             console.log("关闭图标解除鼠标移动事件");
         })
+
+
         // checkEventListener(closeIcon, "pointerdown", function (e) {
         //     console.log('关闭按钮', e);
         //     console.log(this);
